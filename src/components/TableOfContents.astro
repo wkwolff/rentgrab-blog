@@ -1,0 +1,51 @@
+---
+// Table of Contents component for long articles
+---
+
+<nav class="bg-neutral-50 rounded-lg p-6 mb-8" aria-label="Table of contents">
+  <h2 class="text-h4 mb-4">Table of Contents</h2>
+  <ol id="toc-list" class="space-y-2 text-small">
+    <!-- Will be populated by JavaScript -->
+  </ol>
+</nav>
+
+<script>
+  // Generate table of contents from headings
+  document.addEventListener('DOMContentLoaded', () => {
+    const tocList = document.getElementById('toc-list');
+    const article = document.querySelector('.prose-rentgrab');
+    
+    if (tocList && article) {
+      const headings = article.querySelectorAll('h2, h3');
+      
+      headings.forEach((heading, index) => {
+        // Create ID if it doesn't exist
+        if (!heading.id) {
+          heading.id = `heading-${index}`;
+        }
+        
+        // Create TOC item
+        const li = document.createElement('li');
+        const a = document.createElement('a');
+        
+        a.href = `#${heading.id}`;
+        a.textContent = heading.textContent || '';
+        a.className = 'text-neutral-600 hover:text-primary-500 transition-colors';
+        
+        // Indent h3 elements
+        if (heading.tagName === 'H3') {
+          li.className = 'ml-4';
+        }
+        
+        li.appendChild(a);
+        tocList.appendChild(li);
+        
+        // Smooth scroll behavior
+        a.addEventListener('click', (e) => {
+          e.preventDefault();
+          heading.scrollIntoView({ behavior: 'smooth' });
+        });
+      });
+    }
+  });
+</script>

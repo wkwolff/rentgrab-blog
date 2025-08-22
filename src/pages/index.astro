@@ -1,0 +1,220 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import BlogCard from '@/components/BlogCard.astro';
+import NewsletterSignup from '@/components/NewsletterSignup.astro';
+
+// TODO: Fetch posts from content collection
+const featuredPosts = [
+  {
+    title: "Getting Started with Equipment Rental Business",
+    description: "Everything you need to know about starting and running a successful equipment rental business in 2025. From initial setup to scaling strategies.",
+    href: "/blog/guides/getting-started-equipment-rental",
+    image: "/images/featured-1.jpg",
+    category: "guides",
+    author: "Sarah Johnson",
+    publishDate: "2025-08-20",
+    tags: ["business", "startup", "guide"],
+    featured: true,
+  },
+];
+
+const recentPosts = [
+  {
+    title: "10 Essential Tips for Equipment Rental Businesses",
+    description: "Learn the key strategies that successful equipment rental businesses use to grow their revenue and improve customer satisfaction.",
+    href: "/blog/guides/essential-tips-equipment-rental",
+    category: "guides",
+    author: "Sarah Johnson",
+    publishDate: "2025-08-15",
+    tags: ["business", "growth", "tips"],
+  },
+  {
+    title: "How to Price Your Rental Equipment Competitively",
+    description: "Discover pricing strategies that help you stay competitive while maintaining healthy profit margins in the equipment rental market.",
+    href: "/blog/guides/pricing-rental-equipment",
+    category: "guides",
+    author: "Mike Chen",
+    publishDate: "2025-08-10",
+    tags: ["pricing", "strategy", "profit"],
+  },
+  {
+    title: "Digital Marketing Strategies for Rental Businesses",
+    description: "Explore effective digital marketing techniques to attract more customers and grow your equipment rental business online.",
+    href: "/blog/tips/digital-marketing-rental",
+    category: "tips",
+    author: "Emily Davis",
+    publishDate: "2025-08-05",
+    tags: ["marketing", "digital", "growth"],
+  },
+  {
+    title: "Success Story: How RentGrab Helped Local Business Grow 300%",
+    description: "Read how a local construction equipment rental company tripled their revenue using RentGrab's platform and smart business strategies.",
+    href: "/blog/success-stories/local-business-growth",
+    category: "success-stories",
+    author: "John Smith",
+    publishDate: "2025-08-01",
+    tags: ["success", "case-study", "growth"],
+  },
+  {
+    title: "Industry Update: Equipment Rental Market Trends 2025",
+    description: "Stay informed about the latest trends shaping the equipment rental industry in 2025, from technology adoption to market opportunities.",
+    href: "/blog/industry-news/market-trends-2025",
+    category: "industry-news",
+    author: "Lisa Wang",
+    publishDate: "2025-07-28",
+    tags: ["trends", "industry", "market"],
+  },
+];
+---
+
+<BaseLayout>
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-b from-primary-50 to-white py-16 lg:py-24">
+    <div class="container-lg text-center">
+      <h1 class="text-hero mb-6 animate-fade-in">
+        Equipment Rental <span class="text-primary-500">Insights</span> & Guides
+      </h1>
+      <p class="text-xl text-neutral-600 max-w-3xl mx-auto mb-8 animate-slide-up">
+        Expert advice, industry insights, and success stories to help you grow your equipment rental business.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style="animation-delay: 0.2s">
+        <a href="/blog" class="btn-primary">
+          Browse All Articles
+        </a>
+        <a href="#newsletter" class="btn-secondary">
+          Subscribe to Newsletter
+        </a>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Post -->
+  <section class="container-lg py-12">
+    <h2 class="text-h2 mb-8">Featured Article</h2>
+    <div class="grid grid-cols-1 lg:grid-cols-2 gap-8">
+      {featuredPosts.map((post) => (
+        <div class="lg:col-span-2">
+          <article class="article-card border-2 border-primary-500">
+            <a href={post.href} class="flex flex-col lg:flex-row group">
+              <div class="lg:w-1/2 aspect-video overflow-hidden bg-neutral-100">
+                <div class="w-full h-full bg-gradient-to-br from-primary-100 to-primary-50 flex items-center justify-center">
+                  <span class="text-primary-300 text-6xl font-bold">Featured</span>
+                </div>
+              </div>
+              <div class="lg:w-1/2 p-8">
+                <span class="tag mb-4 inline-block">
+                  {post.category.replace('-', ' ')}
+                </span>
+                <h3 class="text-h1 mb-4 group-hover:text-primary-500 transition-colors">
+                  {post.title}
+                </h3>
+                <p class="text-body text-neutral-600 mb-6">
+                  {post.description}
+                </p>
+                <div class="flex items-center gap-2 text-small text-neutral-500">
+                  <span class="font-medium text-neutral-700">{post.author}</span>
+                  <span>•</span>
+                  <time datetime={post.publishDate}>
+                    {new Date(post.publishDate).toLocaleDateString('en-US', {
+                      year: 'numeric',
+                      month: 'long',
+                      day: 'numeric'
+                    })}
+                  </time>
+                </div>
+              </div>
+            </a>
+          </article>
+        </div>
+      ))}
+    </div>
+  </section>
+
+  <!-- Recent Posts Grid -->
+  <section class="container-lg py-12">
+    <div class="flex justify-between items-center mb-8">
+      <h2 class="text-h2">Recent Articles</h2>
+      <a href="/blog" class="text-primary-500 hover:text-primary-600 font-medium">
+        View All →
+      </a>
+    </div>
+    
+    <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+      {recentPosts.map((post) => (
+        <BlogCard
+          title={post.title}
+          description={post.description}
+          href={post.href}
+          category={post.category}
+          author={post.author}
+          publishDate={post.publishDate}
+          tags={post.tags}
+        />
+      ))}
+    </div>
+  </section>
+
+  <!-- Categories Section -->
+  <section class="bg-neutral-50 py-12">
+    <div class="container-lg">
+      <h2 class="text-h2 mb-8 text-center">Browse by Category</h2>
+      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+        {[
+          { name: 'Guides', href: '/blog/guides', count: 12, icon: '📚' },
+          { name: 'Industry News', href: '/blog/industry-news', count: 8, icon: '📰' },
+          { name: 'Success Stories', href: '/blog/success-stories', count: 6, icon: '🎯' },
+          { name: 'Tips', href: '/blog/tips', count: 15, icon: '💡' },
+          { name: 'Updates', href: '/blog/updates', count: 4, icon: '🚀' },
+        ].map((category) => (
+          <a
+            href={category.href}
+            class="bg-white p-6 rounded-lg text-center hover:shadow-md transition-all hover:-translate-y-1 group"
+          >
+            <span class="text-4xl mb-3 block">{category.icon}</span>
+            <h3 class="font-semibold text-neutral-900 group-hover:text-primary-500 transition-colors">
+              {category.name}
+            </h3>
+            <p class="text-small text-neutral-500 mt-1">{category.count} articles</p>
+          </a>
+        ))}
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter Section -->
+  <section id="newsletter" class="container-lg py-12">
+    <NewsletterSignup
+      location="homepage"
+      title="Never Miss an Update"
+      description="Get weekly insights on equipment rental business, industry trends, and growth strategies delivered straight to your inbox."
+    />
+  </section>
+
+  <!-- CTA Section -->
+  <section class="bg-primary-500 text-white py-16">
+    <div class="container-lg text-center">
+      <h2 class="text-h1 mb-4">Ready to Grow Your Rental Business?</h2>
+      <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
+        Join thousands of rental businesses using RentGrab to manage inventory, process payments, and grow revenue.
+      </p>
+      <div class="flex flex-col sm:flex-row gap-4 justify-center">
+        <a
+          href="https://rentgrab.com/signup"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="bg-white text-primary-500 px-8 py-3 rounded-md font-semibold hover:bg-neutral-50 transition-colors"
+        >
+          Start Free Trial
+        </a>
+        <a
+          href="https://rentgrab.com/demo"
+          target="_blank"
+          rel="noopener noreferrer"
+          class="border-2 border-white text-white px-8 py-3 rounded-md font-semibold hover:bg-white hover:text-primary-500 transition-all"
+        >
+          Request Demo
+        </a>
+      </div>
+    </div>
+  </section>
+</BaseLayout>

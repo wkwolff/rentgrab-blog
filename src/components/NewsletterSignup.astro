@@ -1,0 +1,76 @@
+---
+export interface Props {
+  location?: string;
+  title?: string;
+  description?: string;
+}
+
+const {
+  location = 'default',
+  title = 'Stay Updated',
+  description = 'Get the latest equipment rental insights delivered to your inbox.'
+} = Astro.props;
+---
+
+<section class="bg-primary-50 rounded-lg p-8 my-12">
+  <div class="max-w-2xl mx-auto text-center">
+    <h2 class="text-h2 mb-3">{title}</h2>
+    <p class="text-neutral-600 mb-6">{description}</p>
+    
+    <form 
+      class="flex flex-col sm:flex-row gap-3 max-w-md mx-auto"
+      data-location={location}
+    >
+      <input
+        type="email"
+        name="email"
+        placeholder="Enter your email"
+        required
+        class="flex-1 px-4 py-3 border border-neutral-200 rounded-md focus:outline-none focus:ring-2 focus:ring-primary-500 focus:border-transparent"
+        aria-label="Email address for newsletter"
+      />
+      <button 
+        type="submit" 
+        class="btn-primary whitespace-nowrap"
+      >
+        Subscribe Now
+      </button>
+    </form>
+    
+    <p class="text-xs text-neutral-500 mt-4">
+      We respect your privacy. Unsubscribe at any time.
+    </p>
+  </div>
+</section>
+
+<script>
+  // Newsletter form handler
+  const forms = document.querySelectorAll('form[data-location]');
+  
+  forms.forEach(form => {
+    form.addEventListener('submit', async (e) => {
+      e.preventDefault();
+      
+      const formData = new FormData(form as HTMLFormElement);
+      const email = formData.get('email');
+      const location = form.getAttribute('data-location');
+      
+      // TODO: Implement newsletter subscription API
+      console.log('Newsletter signup:', { email, location });
+      
+      // Show success message
+      const button = form.querySelector('button');
+      if (button) {
+        button.textContent = 'Subscribed!';
+        button.classList.add('bg-success');
+        setTimeout(() => {
+          button.textContent = 'Subscribe Now';
+          button.classList.remove('bg-success');
+        }, 3000);
+      }
+      
+      // Clear form
+      (form as HTMLFormElement).reset();
+    });
+  });
+</script>
