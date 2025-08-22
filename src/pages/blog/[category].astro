@@ -6,11 +6,14 @@ import NewsletterSignup from '@/components/NewsletterSignup.astro';
 
 export async function getStaticPaths() {
   const categories = [
-    { slug: 'guides', name: 'Guides', description: 'Comprehensive guides to help you succeed in equipment rental business.' },
-    { slug: 'industry-news', name: 'Industry News', description: 'Latest trends and updates from the equipment rental industry.' },
-    { slug: 'success-stories', name: 'Success Stories', description: 'Real stories from successful rental businesses using RentGrab.' },
-    { slug: 'tips', name: 'Tips', description: 'Quick tips and best practices for rental business owners.' },
-    { slug: 'updates', name: 'Updates', description: 'Product updates and new features from RentGrab.' },
+    { slug: 'getting-started', name: 'Getting Started', description: 'Everything you need to know about peer-to-peer rentals and the sharing economy.' },
+    { slug: 'success-stories', name: 'Success Stories', description: 'Real stories from members earning income and saving money through RentGrab.' },
+    { slug: 'maximizing-earnings', name: 'Maximizing Earnings', description: 'Tips and strategies to turn your unused items into a profitable side income.' },
+    { slug: 'smart-renting', name: 'Smart Renting', description: 'Save money and access what you need by renting from your community.' },
+    { slug: 'industry-insights', name: 'Industry Insights', description: 'Trends, research, and analysis of the sharing economy and peer-to-peer rental market.' },
+    { slug: 'platform-features', name: 'Platform Features', description: 'Learn about RentGrab features and how to make the most of our platform.' },
+    { slug: 'seasonal-guides', name: 'Seasonal Guides', description: 'Timely tips for seasonal rentals and maximizing opportunities throughout the year.' },
+    { slug: 'sustainability-impact', name: 'Sustainability & Impact', description: 'How the sharing economy reduces waste and builds stronger communities.' },
   ];
 
   const allPosts = await getCollection('blog');
@@ -38,11 +41,14 @@ const { categoryName, categoryDescription, posts } = Astro.props;
 
 // Category icons
 const categoryIcons = {
-  'guides': '📚',
-  'industry-news': '📰',
-  'success-stories': '🎯',
-  'tips': '💡',
-  'updates': '🚀',
+  'getting-started': '🚀',
+  'success-stories': '⭐',
+  'maximizing-earnings': '💰',
+  'smart-renting': '🎯',
+  'industry-insights': '📊',
+  'platform-features': '🔧',
+  'seasonal-guides': '📅',
+  'sustainability-impact': '🌱',
 };
 ---
 
@@ -81,7 +87,7 @@ const categoryIcons = {
             <BlogCard
               title={post.data.title}
               description={post.data.description}
-              href={`/blog/${post.data.category}/${post.slug}`}
+              href={`/blog/${post.slug}`}
               image={post.data.heroImage}
               imageAlt={post.data.heroImageAlt}
               category={post.data.category}

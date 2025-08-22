@@ -16,14 +16,14 @@ export interface Props {
 }
 
 const {
-  title = 'RentGrab Blog - Equipment Rental Insights & Guides',
-  description = 'Expert advice on equipment rental business, industry insights, success stories, and product updates from RentGrab.',
+  title = 'RentGrab Blog - Peer-to-Peer Rental Platform',
+  description = 'Join the sharing economy revolution. Learn how to turn unused items into income and save money by renting from neighbors.',
   image = '/og-image.jpg',
   article = false,
   publishedTime,
   modifiedTime,
   author,
-  keywords = []
+  keywords = ['peer to peer rental', 'sharing economy', 'rent from neighbors', 'make money from unused items', 'rental marketplace']
 } = Astro.props;
 ---
 
@@ -50,6 +50,18 @@ const {
       author={author}
       keywords={keywords}
     />
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-13L6TS783Y"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-13L6TS783Y');
+    </script>
+    
+    <!-- HubSpot Tracking -->
+    <script type="text/javascript" id="hs-script-loader" async defer src="//js.hs-scripts.com/50196841.js"></script>
     
     <meta name="generator" content={Astro.generator} />
   </head>

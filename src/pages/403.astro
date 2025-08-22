@@ -1,0 +1,138 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="403 - Access Denied | RentGrab Blog"
+  description="You don't have permission to access this resource."
+>
+  <div class="min-h-[70vh] flex flex-col justify-center py-12">
+    <!-- Error Message Section -->
+    <div class="container-lg text-center">
+      <!-- 403 Icon/Illustration -->
+      <div class="mb-8">
+        <div class="inline-flex items-center justify-center w-32 h-32 bg-yellow-50 rounded-full mb-6">
+          <svg class="w-16 h-16 text-yellow-600" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 15v2m-6 4h12a2 2 0 002-2v-6a2 2 0 00-2-2H6a2 2 0 00-2 2v6a2 2 0 002 2zm10-10V7a4 4 0 00-8 0v4h8z"></path>
+          </svg>
+        </div>
+        
+        <!-- Error Code -->
+        <h1 class="text-8xl font-bold text-yellow-600 mb-4">403</h1>
+        
+        <!-- Error Title -->
+        <h2 class="text-h1 mb-4">Access Restricted</h2>
+        
+        <!-- Error Description -->
+        <p class="text-xl text-neutral-600 max-w-2xl mx-auto mb-4">
+          This equipment is reserved! You don't have permission to access this resource.
+        </p>
+        
+        <p class="text-neutral-500 max-w-xl mx-auto mb-8">
+          This page might be private, require special permissions, or be available only to certain users.
+        </p>
+        
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+          <a href="/" class="btn-primary">
+            Go to Homepage
+          </a>
+          <button onclick="history.back()" class="btn-secondary">
+            Go Back
+          </button>
+        </div>
+      </div>
+
+      <!-- Possible Reasons -->
+      <div class="bg-neutral-50 rounded-lg p-8 max-w-2xl mx-auto mb-8">
+        <h3 class="text-h3 mb-4">Why You're Seeing This:</h3>
+        <ul class="text-left text-neutral-700 space-y-3 max-w-md mx-auto">
+          <li class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>This content requires authentication</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>The page is restricted to certain users</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>Your session may have expired</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-yellow-600 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>The link you followed may be incorrect</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Help Section -->
+      <div class="bg-primary-50 rounded-lg p-6 max-w-lg mx-auto">
+        <p class="text-neutral-700 mb-3">
+          <strong>Need access to this content?</strong>
+        </p>
+        <p class="text-sm text-neutral-600 mb-4">
+          If you believe you should have access to this page, please contact our support team.
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center text-sm">
+          <a href="/contact" class="text-primary-600 hover:text-primary-700 transition-colors flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+            Contact Support
+          </a>
+          <span class="text-neutral-400 hidden sm:inline">|</span>
+          <a href="https://rentgrab.com" target="_blank" rel="noopener noreferrer" class="text-primary-600 hover:text-primary-700 transition-colors flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M10 6H6a2 2 0 00-2 2v10a2 2 0 002 2h10a2 2 0 002-2v-4M14 4h6m0 0v6m0-6L10 14"></path>
+            </svg>
+            Visit RentGrab
+          </a>
+        </div>
+      </div>
+
+      <!-- Alternative Content -->
+      <div class="mt-12">
+        <p class="text-neutral-600 mb-6">While you're here, explore our public content:</p>
+        <div class="flex flex-wrap gap-4 justify-center">
+          <a href="/blog" class="text-primary-600 hover:text-primary-700 transition-colors font-medium">
+            Browse Articles →
+          </a>
+          <a href="/blog/guides" class="text-primary-600 hover:text-primary-700 transition-colors font-medium">
+            Read Guides →
+          </a>
+          <a href="/blog/tips" class="text-primary-600 hover:text-primary-700 transition-colors font-medium">
+            Get Tips →
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  /* Add a subtle shake animation to the lock icon */
+  @keyframes shake {
+    0%, 100% {
+      transform: translateX(0);
+    }
+    25% {
+      transform: translateX(-5px);
+    }
+    75% {
+      transform: translateX(5px);
+    }
+  }
+  
+  .inline-flex:hover svg {
+    animation: shake 0.5s ease-in-out;
+  }
+</style>

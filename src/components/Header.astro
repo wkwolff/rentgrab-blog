@@ -3,11 +3,12 @@ import Logo from '@/components/Logo.astro';
 
 const navLinks = [
   { href: '/blog', label: 'All Posts' },
-  { href: '/blog/guides', label: 'Guides' },
-  { href: '/blog/industry-news', label: 'Industry News' },
+  { href: '/blog/getting-started', label: 'Getting Started' },
+  { href: '/blog/maximizing-earnings', label: 'Earn' },
+  { href: '/blog/smart-renting', label: 'Rent' },
   { href: '/blog/success-stories', label: 'Success Stories' },
-  { href: '/blog/tips', label: 'Tips' },
-  { href: '/blog/updates', label: 'Updates' },
+  { href: '/blog/sustainability-impact', label: 'Impact' },
+  { href: '/contact', label: 'Contact' },
 ];
 
 const currentPath = Astro.url.pathname;
@@ -48,12 +49,10 @@ const currentPath = Astro.url.pathname;
       <!-- CTA Button -->
       <div class="hidden tablet:block">
         <a
-          href="https://rentgrab.com"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/#newsletter"
           class="btn-primary text-sm"
         >
-          Visit RentGrab
+          Join Waitlist
         </a>
       </div>
       
@@ -104,12 +103,10 @@ const currentPath = Astro.url.pathname;
         ))}
         <li class="pt-4 border-t border-neutral-200">
           <a
-            href="https://rentgrab.com"
-            target="_blank"
-            rel="noopener noreferrer"
+            href="/#newsletter"
             class="btn-primary inline-block text-sm"
           >
-            Visit RentGrab
+            Join Waitlist
           </a>
         </li>
       </ul>

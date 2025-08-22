@@ -101,6 +101,11 @@
     @apply hover:bg-primary-600 hover:-translate-y-0.5 hover:shadow-hover;
     @apply focus:outline-none focus:ring-2 focus:ring-primary-500 focus:ring-offset-2;
     @apply active:bg-primary-700;
+    color: white !important;
+  }
+  
+  .btn-primary:hover {
+    color: white !important;
   }
 
   /* Secondary Button */
@@ -130,8 +135,9 @@
 
   /* Category Tag */
   .tag {
-    @apply bg-primary-50 text-primary-700 px-3 py-1 rounded-full;
-    @apply text-sm font-medium;
+    @apply inline-flex items-center justify-center;
+    @apply bg-primary-50 text-primary-700 px-3 py-1.5 rounded-full;
+    @apply text-sm font-medium leading-tight;
     @apply transition-colors duration-200;
     @apply hover:bg-primary-100;
   }

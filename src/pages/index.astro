@@ -1,70 +1,25 @@
 ---
+import { getCollection } from 'astro:content';
 import BaseLayout from '@/layouts/BaseLayout.astro';
 import BlogCard from '@/components/BlogCard.astro';
 import NewsletterSignup from '@/components/NewsletterSignup.astro';
 
-// TODO: Fetch posts from content collection
-const featuredPosts = [
-  {
-    title: "Getting Started with Equipment Rental Business",
-    description: "Everything you need to know about starting and running a successful equipment rental business in 2025. From initial setup to scaling strategies.",
-    href: "/blog/guides/getting-started-equipment-rental",
-    image: "/images/featured-1.jpg",
-    category: "guides",
-    author: "Sarah Johnson",
-    publishDate: "2025-08-20",
-    tags: ["business", "startup", "guide"],
-    featured: true,
-  },
-];
+// Get all blog posts
+const allPosts = await getCollection('blog');
+const publishedPosts = allPosts.filter(post => post.data.draft !== true);
 
-const recentPosts = [
-  {
-    title: "10 Essential Tips for Equipment Rental Businesses",
-    description: "Learn the key strategies that successful equipment rental businesses use to grow their revenue and improve customer satisfaction.",
-    href: "/blog/guides/essential-tips-equipment-rental",
-    category: "guides",
-    author: "Sarah Johnson",
-    publishDate: "2025-08-15",
-    tags: ["business", "growth", "tips"],
-  },
-  {
-    title: "How to Price Your Rental Equipment Competitively",
-    description: "Discover pricing strategies that help you stay competitive while maintaining healthy profit margins in the equipment rental market.",
-    href: "/blog/guides/pricing-rental-equipment",
-    category: "guides",
-    author: "Mike Chen",
-    publishDate: "2025-08-10",
-    tags: ["pricing", "strategy", "profit"],
-  },
-  {
-    title: "Digital Marketing Strategies for Rental Businesses",
-    description: "Explore effective digital marketing techniques to attract more customers and grow your equipment rental business online.",
-    href: "/blog/tips/digital-marketing-rental",
-    category: "tips",
-    author: "Emily Davis",
-    publishDate: "2025-08-05",
-    tags: ["marketing", "digital", "growth"],
-  },
-  {
-    title: "Success Story: How RentGrab Helped Local Business Grow 300%",
-    description: "Read how a local construction equipment rental company tripled their revenue using RentGrab's platform and smart business strategies.",
-    href: "/blog/success-stories/local-business-growth",
-    category: "success-stories",
-    author: "John Smith",
-    publishDate: "2025-08-01",
-    tags: ["success", "case-study", "growth"],
-  },
-  {
-    title: "Industry Update: Equipment Rental Market Trends 2025",
-    description: "Stay informed about the latest trends shaping the equipment rental industry in 2025, from technology adoption to market opportunities.",
-    href: "/blog/industry-news/market-trends-2025",
-    category: "industry-news",
-    author: "Lisa Wang",
-    publishDate: "2025-07-28",
-    tags: ["trends", "industry", "market"],
-  },
-];
+// Sort posts by date
+const sortedPosts = publishedPosts.sort((a, b) => 
+  new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()
+);
+
+// Get featured posts
+const featuredPosts = sortedPosts.filter(post => post.data.featured);
+
+// Get recent posts (non-featured)
+const recentPosts = sortedPosts
+  .filter(post => !post.data.featured)
+  .slice(0, 6);
 ---
 
 <BaseLayout>
@@ -72,17 +27,18 @@ const recentPosts = [
   <section class="bg-gradient-to-b from-primary-50 to-white py-16 lg:py-24">
     <div class="container-lg text-center">
       <h1 class="text-hero mb-6 animate-fade-in">
-        Equipment Rental <span class="text-primary-500">Insights</span> & Guides
+        Turn Idle Items into <span class="text-primary-500">Income</span>
       </h1>
       <p class="text-xl text-neutral-600 max-w-3xl mx-auto mb-8 animate-slide-up">
-        Expert advice, industry insights, and success stories to help you grow your equipment rental business.
+        Join the sharing economy revolution. Rent from neighbors, earn from what you own. 
+        Be among the first to access RentGrab's peer-to-peer rental marketplace.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center animate-slide-up" style="animation-delay: 0.2s">
-        <a href="/blog" class="btn-primary">
-          Browse All Articles
+        <a href="#newsletter" class="btn-primary">
+          Join the Waitlist
         </a>
-        <a href="#newsletter" class="btn-secondary">
-          Subscribe to Newsletter
+        <a href="/blog/smart-renting/true-cost-buying-vs-renting" class="btn-secondary">
+          Calculate Your Savings
         </a>
       </div>
     </div>
@@ -95,27 +51,36 @@ const recentPosts = [
       {featuredPosts.map((post) => (
         <div class="lg:col-span-2">
           <article class="article-card border-2 border-primary-500">
-            <a href={post.href} class="flex flex-col lg:flex-row group">
+            <a href={`/blog/${post.slug}`} class="flex flex-col lg:flex-row group">
               <div class="lg:w-1/2 aspect-video overflow-hidden bg-neutral-100">
-                <div class="w-full h-full bg-gradient-to-br from-primary-100 to-primary-50 flex items-center justify-center">
-                  <span class="text-primary-300 text-6xl font-bold">Featured</span>
-                </div>
+                {post.data.heroImage ? (
+                  <img
+                    src={post.data.heroImage}
+                    alt={post.data.heroImageAlt || post.data.title}
+                    loading="lazy"
+                    class="w-full h-full object-cover transition-transform duration-300 group-hover:scale-105"
+                  />
+                ) : (
+                  <div class="w-full h-full bg-gradient-to-br from-primary-100 to-primary-50 flex items-center justify-center">
+                    <span class="text-primary-300 text-6xl font-bold">Featured</span>
+                  </div>
+                )}
               </div>
               <div class="lg:w-1/2 p-8">
                 <span class="tag mb-4 inline-block">
-                  {post.category.replace('-', ' ')}
+                  {post.data.category.replace('-', ' ')}
                 </span>
                 <h3 class="text-h1 mb-4 group-hover:text-primary-500 transition-colors">
-                  {post.title}
+                  {post.data.title}
                 </h3>
                 <p class="text-body text-neutral-600 mb-6">
-                  {post.description}
+                  {post.data.description}
                 </p>
                 <div class="flex items-center gap-2 text-small text-neutral-500">
-                  <span class="font-medium text-neutral-700">{post.author}</span>
+                  <span class="font-medium text-neutral-700">{post.data.author}</span>
                   <span>•</span>
-                  <time datetime={post.publishDate}>
-                    {new Date(post.publishDate).toLocaleDateString('en-US', {
+                  <time datetime={post.data.publishDate.toString()}>
+                    {new Date(post.data.publishDate).toLocaleDateString('en-US', {
                       year: 'numeric',
                       month: 'long',
                       day: 'numeric'
@@ -142,13 +107,15 @@ const recentPosts = [
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
       {recentPosts.map((post) => (
         <BlogCard
-          title={post.title}
-          description={post.description}
-          href={post.href}
-          category={post.category}
-          author={post.author}
-          publishDate={post.publishDate}
-          tags={post.tags}
+          title={post.data.title}
+          description={post.data.description}
+          href={`/blog/${post.slug}`}
+          image={post.data.heroImage}
+          imageAlt={post.data.heroImageAlt}
+          category={post.data.category}
+          author={post.data.author}
+          publishDate={post.data.publishDate.toString()}
+          tags={post.data.tags}
         />
       ))}
     </div>
@@ -157,24 +124,27 @@ const recentPosts = [
   <!-- Categories Section -->
   <section class="bg-neutral-50 py-12">
     <div class="container-lg">
-      <h2 class="text-h2 mb-8 text-center">Browse by Category</h2>
-      <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      <h2 class="text-h2 mb-8 text-center">Explore Topics</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
         {[
-          { name: 'Guides', href: '/blog/guides', count: 12, icon: '📚' },
-          { name: 'Industry News', href: '/blog/industry-news', count: 8, icon: '📰' },
-          { name: 'Success Stories', href: '/blog/success-stories', count: 6, icon: '🎯' },
-          { name: 'Tips', href: '/blog/tips', count: 15, icon: '💡' },
-          { name: 'Updates', href: '/blog/updates', count: 4, icon: '🚀' },
+          { name: 'Getting Started', href: '/blog/getting-started', icon: '🚀', desc: 'Your journey begins here' },
+          { name: 'Maximize Earnings', href: '/blog/maximizing-earnings', icon: '💰', desc: 'Turn items into income' },
+          { name: 'Smart Renting', href: '/blog/smart-renting', icon: '🎯', desc: 'Save money, rent smart' },
+          { name: 'Success Stories', href: '/blog/success-stories', icon: '⭐', desc: 'Real member experiences' },
+          { name: 'Industry Insights', href: '/blog/industry-insights', icon: '📊', desc: 'Sharing economy trends' },
+          { name: 'Seasonal Guides', href: '/blog/seasonal-guides', icon: '📅', desc: 'Timely rental tips' },
+          { name: 'Sustainability', href: '/blog/sustainability-impact', icon: '🌱', desc: 'Environmental impact' },
+          { name: 'Platform Features', href: '/blog/platform-features', icon: '🔧', desc: 'Coming soon' },
         ].map((category) => (
           <a
             href={category.href}
             class="bg-white p-6 rounded-lg text-center hover:shadow-md transition-all hover:-translate-y-1 group"
           >
-            <span class="text-4xl mb-3 block">{category.icon}</span>
+            <span class="text-3xl mb-2 block">{category.icon}</span>
             <h3 class="font-semibold text-neutral-900 group-hover:text-primary-500 transition-colors">
               {category.name}
             </h3>
-            <p class="text-small text-neutral-500 mt-1">{category.count} articles</p>
+            <p class="text-xs text-neutral-500 mt-1">{category.desc}</p>
           </a>
         ))}
       </div>
@@ -185,34 +155,30 @@ const recentPosts = [
   <section id="newsletter" class="container-lg py-12">
     <NewsletterSignup
       location="homepage"
-      title="Never Miss an Update"
-      description="Get weekly insights on equipment rental business, industry trends, and growth strategies delivered straight to your inbox."
+      title="Get Early Access to RentGrab"
+      description="Be among the first to turn idle items into income. Join the waitlist for exclusive launch benefits."
     />
   </section>
 
   <!-- CTA Section -->
   <section class="bg-primary-500 text-white py-16">
     <div class="container-lg text-center">
-      <h2 class="text-h1 mb-4">Ready to Grow Your Rental Business?</h2>
+      <h2 class="text-h1 mb-4">Ready to Join the Sharing Economy?</h2>
       <p class="text-xl mb-8 opacity-90 max-w-2xl mx-auto">
-        Join thousands of rental businesses using RentGrab to manage inventory, process payments, and grow revenue.
+        Whether you want to earn from unused items or save money by renting from neighbors, RentGrab makes peer-to-peer rentals simple, safe, and profitable.
       </p>
       <div class="flex flex-col sm:flex-row gap-4 justify-center">
         <a
-          href="https://rentgrab.com/signup"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="#newsletter"
           class="bg-white text-primary-500 px-8 py-3 rounded-md font-semibold hover:bg-neutral-50 transition-colors"
         >
-          Start Free Trial
+          Join Waitlist - Get 3 Months Free
         </a>
         <a
-          href="https://rentgrab.com/demo"
-          target="_blank"
-          rel="noopener noreferrer"
+          href="/blog/getting-started/complete-guide-peer-to-peer-rentals"
           class="border-2 border-white text-white px-8 py-3 rounded-md font-semibold hover:bg-white hover:text-primary-500 transition-all"
         >
-          Request Demo
+          Learn How It Works
         </a>
       </div>
     </div>

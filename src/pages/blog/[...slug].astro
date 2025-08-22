@@ -8,11 +8,9 @@ export async function getStaticPaths() {
   });
 
   return blogEntries.map(entry => {
-    // Remove the category prefix from the slug if it exists
-    const cleanSlug = entry.slug.replace(`${entry.data.category}/`, '');
-    
+    // The entry.slug already contains the full path (e.g., "success-stories/local-business-growth")
     return {
-      params: { slug: `${entry.data.category}/${cleanSlug}` },
+      params: { slug: entry.slug },
       props: { entry },
     };
   });

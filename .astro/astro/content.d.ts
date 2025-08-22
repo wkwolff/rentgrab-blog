@@ -152,37 +152,30 @@ declare module 'astro:content' {
 
 	type ContentEntryMap = {
 		"blog": {
-"guides/getting-started-equipment-rental.mdx": {
-	id: "guides/getting-started-equipment-rental.mdx";
-  slug: "guides/getting-started-equipment-rental";
+"getting-started/complete-guide-peer-to-peer-rentals.mdx": {
+	id: "getting-started/complete-guide-peer-to-peer-rentals.mdx";
+  slug: "getting-started/complete-guide-peer-to-peer-rentals";
   body: string;
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".mdx"] };
-"industry-news/market-trends-2025.mdx": {
-	id: "industry-news/market-trends-2025.mdx";
-  slug: "industry-news/market-trends-2025";
+"maximizing-earnings/hidden-value-in-your-garage.mdx": {
+	id: "maximizing-earnings/hidden-value-in-your-garage.mdx";
+  slug: "maximizing-earnings/hidden-value-in-your-garage";
   body: string;
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".mdx"] };
-"success-stories/local-business-growth.mdx": {
-	id: "success-stories/local-business-growth.mdx";
-  slug: "success-stories/local-business-growth";
+"smart-renting/true-cost-buying-vs-renting.mdx": {
+	id: "smart-renting/true-cost-buying-vs-renting.mdx";
+  slug: "smart-renting/true-cost-buying-vs-renting";
   body: string;
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".mdx"] };
-"tips/digital-marketing-rental.mdx": {
-	id: "tips/digital-marketing-rental.mdx";
-  slug: "tips/digital-marketing-rental";
-  body: string;
-  collection: "blog";
-  data: InferEntrySchema<"blog">
-} & { render(): Render[".mdx"] };
-"updates/new-features-august-2025.mdx": {
-	id: "updates/new-features-august-2025.mdx";
-  slug: "updates/new-features-august-2025";
+"sustainability-impact/sharing-economy-saves-planet.mdx": {
+	id: "sustainability-impact/sharing-economy-saves-planet.mdx";
+  slug: "sustainability-impact/sharing-economy-saves-planet";
   body: string;
   collection: "blog";
   data: InferEntrySchema<"blog">
@@ -193,13 +186,8 @@ declare module 'astro:content' {
 
 	type DataEntryMap = {
 		"authors": {
-"emily-davis": {
-	id: "emily-davis";
-  collection: "authors";
-  data: InferEntrySchema<"authors">
-};
-"sarah-johnson": {
-	id: "sarah-johnson";
+"kevin-wolff": {
+	id: "kevin-wolff";
   collection: "authors";
   data: InferEntrySchema<"authors">
 };

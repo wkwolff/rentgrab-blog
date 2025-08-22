@@ -9,11 +9,14 @@ const blogCollection = defineCollection({
     publishDate: z.coerce.date(),
     author: z.string(),
     category: z.enum([
-      'guides',
-      'industry-news',
+      'getting-started',
       'success-stories',
-      'tips',
-      'updates'
+      'maximizing-earnings',
+      'smart-renting',
+      'industry-insights',
+      'platform-features',
+      'seasonal-guides',
+      'sustainability-impact'
     ]),
     
     // SEO fields
@@ -27,6 +30,10 @@ const blogCollection = defineCollection({
     tags: z.array(z.string()),
     featured: z.boolean().default(false),
     draft: z.boolean().default(false),
+    
+    // User targeting
+    userType: z.enum(['for-renters', 'for-owners', 'for-everyone']).default('for-everyone').optional(),
+    stage: z.enum(['pre-launch', 'new-user', 'active-user', 'power-user']).default('pre-launch').optional(),
     
     // Updates
     updateDate: z.coerce.date().optional(),
@@ -45,9 +52,11 @@ const authorsCollection = defineCollection({
     bio: z.string(),
     avatar: z.string(),
     social: z.object({
+      facebook: z.string().optional(),
       twitter: z.string().optional(),
       linkedin: z.string().optional(),
       github: z.string().optional(),
+      instagram: z.string().optional(),
     }).optional(),
     expertise: z.array(z.string()),
   }),

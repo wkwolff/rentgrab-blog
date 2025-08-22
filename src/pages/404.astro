@@ -1,0 +1,133 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import BlogCard from '@/components/BlogCard.astro';
+import { getCollection } from 'astro:content';
+
+// Get recent posts for suggestions
+const allPosts = await getCollection('blog', ({ data }) => {
+  return data.draft !== true;
+});
+
+const recentPosts = allPosts
+  .sort((a, b) => new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime())
+  .slice(0, 3);
+
+const categories = [
+  { name: 'Getting Started', slug: 'getting-started', icon: '🚀', description: 'Begin your sharing economy journey' },
+  { name: 'Maximize Earnings', slug: 'maximizing-earnings', icon: '💰', description: 'Turn items into income' },
+  { name: 'Smart Renting', slug: 'smart-renting', icon: '🎯', description: 'Save money by renting' },
+  { name: 'Success Stories', slug: 'success-stories', icon: '⭐', description: 'Real member experiences' },
+  { name: 'Sustainability', slug: 'sustainability-impact', icon: '🌱', description: 'Environmental impact' },
+];
+---
+
+<BaseLayout
+  title="404 - Page Not Found | RentGrab Blog"
+  description="The page you're looking for couldn't be found. Browse our latest articles or explore our categories."
+>
+  <div class="min-h-[70vh] flex flex-col justify-center py-12">
+    <!-- Error Message Section -->
+    <div class="container-lg text-center mb-12">
+      <!-- 404 Icon/Illustration -->
+      <div class="mb-8">
+        <div class="inline-flex items-center justify-center w-32 h-32 bg-primary-50 rounded-full mb-6">
+          <svg class="w-16 h-16 text-primary-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"></path>
+          </svg>
+        </div>
+        
+        <!-- Error Code -->
+        <h1 class="text-8xl font-bold text-primary-500 mb-4">404</h1>
+        
+        <!-- Error Title -->
+        <h2 class="text-h1 mb-4">Oops! Page Not Found</h2>
+        
+        <!-- Error Description -->
+        <p class="text-xl text-neutral-600 max-w-2xl mx-auto mb-8">
+          Looks like this equipment has been rented out! The page you're looking for doesn't exist or has been moved.
+        </p>
+        
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center">
+          <a href="/" class="btn-primary">
+            Go to Homepage
+          </a>
+          <button onclick="history.back()" class="btn-secondary">
+            Go Back
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- Quick Links Section -->
+    <div class="bg-neutral-50 py-12">
+      <div class="container-lg">
+        <h3 class="text-h2 text-center mb-8">Explore Our Categories</h3>
+        <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4 mb-12">
+          {categories.map((category) => (
+            <a
+              href={`/blog/${category.slug}`}
+              class="bg-white border border-neutral-200 p-6 rounded-lg text-center hover:shadow-md hover:border-primary-200 transition-all group"
+            >
+              <span class="text-3xl mb-3 block">{category.icon}</span>
+              <h4 class="font-semibold text-neutral-900 group-hover:text-primary-500 transition-colors mb-2">
+                {category.name}
+              </h4>
+              <p class="text-xs text-neutral-500">{category.description}</p>
+            </a>
+          ))}
+        </div>
+      </div>
+    </div>
+
+    <!-- Recent Posts Section -->
+    {recentPosts.length > 0 && (
+      <div class="container-lg py-12">
+        <h3 class="text-h2 text-center mb-8">Recent Articles</h3>
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+          {recentPosts.map((post) => (
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              href={`/blog/${post.slug}`}
+              image={post.data.heroImage}
+              imageAlt={post.data.heroImageAlt}
+              category={post.data.category}
+              author={post.data.author}
+              publishDate={post.data.publishDate.toString()}
+              tags={post.data.tags}
+            />
+          ))}
+        </div>
+      </div>
+    )}
+
+    <!-- Contact Section -->
+    <div class="bg-primary-50 py-8">
+      <div class="container-lg text-center">
+        <p class="text-lg text-neutral-700 mb-4">
+          Can't find what you're looking for?
+        </p>
+        <a href="/contact" class="text-primary-600 font-semibold hover:text-primary-700 transition-colors">
+          Contact our team for help →
+        </a>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  /* Add a subtle animation to the 404 number */
+  @keyframes float {
+    0%, 100% {
+      transform: translateY(0);
+    }
+    50% {
+      transform: translateY(-10px);
+    }
+  }
+  
+  h1 {
+    animation: float 3s ease-in-out infinite;
+  }
+</style>

@@ -7,8 +7,8 @@ export interface Props {
 
 const {
   location = 'default',
-  title = 'Stay Updated',
-  description = 'Get the latest equipment rental insights delivered to your inbox.'
+  title = 'Get Early Access',
+  description = 'Be among the first to turn idle items into income. Join the waitlist for exclusive benefits.'
 } = Astro.props;
 ---
 
@@ -37,6 +37,15 @@ const {
       </button>
     </form>
     
+    <div class="mt-6 space-y-2">
+      <p class="font-semibold text-neutral-700">Join the waitlist and get:</p>
+      <ul class="text-sm text-neutral-600 space-y-1">
+        <li>✓ 3 months free premium features ($147 value)</li>
+        <li>✓ Founding member badge</li>
+        <li>✓ First access when we launch</li>
+        <li>✓ Insider tips and early bird specials</li>
+      </ul>
+    </div>
     <p class="text-xs text-neutral-500 mt-4">
       We respect your privacy. Unsubscribe at any time.
     </p>
@@ -44,6 +53,20 @@ const {
 </section>
 
 <script>
+  // HubSpot configuration
+  const HUBSPOT_PORTAL_ID = '50196841';
+  const HUBSPOT_FORM_ID = '8a3b20e8-b5ed-46ea-b35d-ef9f538b0542';
+  
+  // Helper function to get cookies
+  function getCookie(name: string): string | null {
+    const value = `; ${document.cookie}`;
+    const parts = value.split(`; ${name}=`);
+    if (parts.length === 2) {
+      return parts.pop()?.split(';').shift() || null;
+    }
+    return null;
+  }
+  
   // Newsletter form handler
   const forms = document.querySelectorAll('form[data-location]');
   
@@ -52,25 +75,89 @@ const {
       e.preventDefault();
       
       const formData = new FormData(form as HTMLFormElement);
-      const email = formData.get('email');
+      const email = formData.get('email') as string;
       const location = form.getAttribute('data-location');
+      const button = form.querySelector('button') as HTMLButtonElement;
+      const originalButtonText = button?.textContent || 'Subscribe Now';
       
-      // TODO: Implement newsletter subscription API
-      console.log('Newsletter signup:', { email, location });
-      
-      // Show success message
-      const button = form.querySelector('button');
+      // Show loading state
       if (button) {
-        button.textContent = 'Subscribed!';
-        button.classList.add('bg-success');
-        setTimeout(() => {
-          button.textContent = 'Subscribe Now';
-          button.classList.remove('bg-success');
-        }, 3000);
+        button.disabled = true;
+        button.textContent = 'Subscribing...';
       }
       
-      // Clear form
-      (form as HTMLFormElement).reset();
+      try {
+        // Prepare HubSpot submission data
+        const hubspotData = {
+          fields: [
+            { name: 'email', value: email }
+          ],
+          context: {
+            pageUri: window.location.href,
+            pageName: document.title
+          }
+        };
+        
+        // Add HubSpot tracking cookie if available
+        const hutk = getCookie('hubspotutk');
+        if (hutk) {
+          (hubspotData.context as any).hutk = hutk;
+        }
+        
+        // Submit to HubSpot
+        const response = await fetch(
+          `https://api.hsforms.com/submissions/v3/integration/submit/${HUBSPOT_PORTAL_ID}/${HUBSPOT_FORM_ID}`,
+          {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json'
+            },
+            body: JSON.stringify(hubspotData)
+          }
+        );
+        
+        if (response.ok) {
+          // Show success message
+          if (button) {
+            button.textContent = '✓ Subscribed!';
+            button.classList.add('bg-green-600', 'hover:bg-green-700');
+            button.classList.remove('bg-primary-500', 'hover:bg-primary-600');
+          }
+          
+          // Clear form
+          (form as HTMLFormElement).reset();
+          
+          // Reset button after delay
+          setTimeout(() => {
+            if (button) {
+              button.textContent = originalButtonText;
+              button.classList.remove('bg-green-600', 'hover:bg-green-700');
+              button.classList.add('bg-primary-500', 'hover:bg-primary-600');
+              button.disabled = false;
+            }
+          }, 3000);
+        } else {
+          throw new Error('Subscription failed');
+        }
+      } catch (error) {
+        // Show error message
+        console.error('Newsletter signup error:', error);
+        if (button) {
+          button.textContent = 'Error - Please try again';
+          button.classList.add('bg-red-600', 'hover:bg-red-700');
+          button.classList.remove('bg-primary-500', 'hover:bg-primary-600');
+        }
+        
+        // Reset button after delay
+        setTimeout(() => {
+          if (button) {
+            button.textContent = originalButtonText;
+            button.classList.remove('bg-red-600', 'hover:bg-red-700');
+            button.classList.add('bg-primary-500', 'hover:bg-primary-600');
+            button.disabled = false;
+          }
+        }, 3000);
+      }
     });
   });
 </script>

@@ -1,0 +1,110 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import BlogCard from '@/components/BlogCard.astro';
+import NewsletterSignup from '@/components/NewsletterSignup.astro';
+import SocialShare from '@/components/SocialShare.astro';
+
+export async function getStaticPaths() {
+  const allPosts = await getCollection('blog', ({ data }) => {
+    return data.draft !== true;
+  });
+
+  // Get all unique tags
+  const allTags = new Set();
+  allPosts.forEach(post => {
+    post.data.tags.forEach(tag => {
+      allTags.add(tag);
+    });
+  });
+
+  // Create a path for each tag
+  return Array.from(allTags).map(tag => {
+    const tagPosts = allPosts.filter(post => 
+      post.data.tags.includes(tag)
+    );
+    
+    return {
+      params: { tag },
+      props: { 
+        tagName: tag,
+        posts: tagPosts.sort((a, b) => 
+          new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()
+        )
+      },
+    };
+  });
+}
+
+const { tag } = Astro.params;
+const { tagName, posts } = Astro.props;
+
+// Format tag name for display (e.g., "save-money" -> "Save Money")
+const displayTagName = tagName
+  .split('-')
+  .map(word => word.charAt(0).toUpperCase() + word.slice(1))
+  .join(' ');
+---
+
+<BaseLayout
+  title={`Articles tagged "${displayTagName}" | RentGrab Blog`}
+  description={`Browse all articles tagged with "${displayTagName}" on the RentGrab blog.`}
+>
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-b from-primary-50 to-white py-12 lg:py-16">
+    <div class="container-lg">
+      <div class="flex items-center gap-4 mb-4">
+        <a href="/blog" class="text-primary-500 hover:text-primary-600 transition-colors">
+          ← Back to Blog
+        </a>
+        <span class="text-neutral-400">|</span>
+        <a href="/blog/tag" class="text-primary-500 hover:text-primary-600 transition-colors">
+          View All Tags
+        </a>
+      </div>
+      <div class="text-center">
+        <h1 class="text-hero mb-4">Tag: {displayTagName}</h1>
+        <p class="text-xl text-neutral-600">
+          {posts.length} {posts.length === 1 ? 'article' : 'articles'} tagged with "{displayTagName}"
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Posts Grid -->
+  <section class="container-lg py-12">
+    {posts.length > 0 ? (
+      <>
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
+          {posts.map((post) => (
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              href={`/blog/${post.slug}`}
+              category={post.data.category}
+              author={post.data.author}
+              publishDate={post.data.publishDate.toISOString()}
+              tags={post.data.tags}
+              image={post.data.heroImage}
+              imageAlt={post.data.heroImageAlt}
+            />
+          ))}
+        </div>
+      </>
+    ) : (
+      <div class="text-center py-12">
+        <p class="text-xl text-neutral-600">No articles found with this tag.</p>
+        <a href="/blog" class="btn-primary mt-6">
+          Browse All Articles
+        </a>
+      </div>
+    )}
+  </section>
+
+  <!-- Newsletter -->
+  <NewsletterSignup 
+    location="tag-page-bottom"
+    title="Stay Updated"
+    description="Get the latest tips and insights from the sharing economy delivered to your inbox."
+  />
+</BaseLayout>

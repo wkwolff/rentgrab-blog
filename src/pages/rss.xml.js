@@ -11,14 +11,14 @@ export async function GET(context) {
   );
 
   return rss({
-    title: 'RentGrab Blog',
-    description: 'Expert advice on equipment rental business, industry insights, and success stories.',
+    title: 'RentGrab Blog - Peer-to-Peer Rental Platform',
+    description: 'Join the sharing economy revolution. Learn how to turn unused items into income and save money by renting from neighbors.',
     site: context.site || 'https://blog.rentgrab.com',
     items: sortedPosts.map((post) => ({
       title: post.data.title,
       pubDate: post.data.publishDate,
       description: post.data.description,
-      link: `/blog/${post.data.category}/${post.slug}/`,
+      link: `/blog/${post.slug}/`,
       categories: post.data.tags,
       author: post.data.author,
     })),

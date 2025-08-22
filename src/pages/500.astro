@@ -1,0 +1,121 @@
+---
+import BaseLayout from '@/layouts/BaseLayout.astro';
+---
+
+<BaseLayout
+  title="500 - Server Error | RentGrab Blog"
+  description="We're experiencing technical difficulties. Please try again later."
+>
+  <div class="min-h-[70vh] flex flex-col justify-center py-12">
+    <!-- Error Message Section -->
+    <div class="container-lg text-center">
+      <!-- 500 Icon/Illustration -->
+      <div class="mb-8">
+        <div class="inline-flex items-center justify-center w-32 h-32 bg-red-50 rounded-full mb-6">
+          <svg class="w-16 h-16 text-red-500" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 8v4m0 4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+          </svg>
+        </div>
+        
+        <!-- Error Code -->
+        <h1 class="text-8xl font-bold text-red-500 mb-4">500</h1>
+        
+        <!-- Error Title -->
+        <h2 class="text-h1 mb-4">Something Went Wrong</h2>
+        
+        <!-- Error Description -->
+        <p class="text-xl text-neutral-600 max-w-2xl mx-auto mb-4">
+          Our equipment needs maintenance. We're working on fixing this issue right away.
+        </p>
+        
+        <p class="text-neutral-500 max-w-xl mx-auto mb-8">
+          This is a temporary problem on our end. Please try refreshing the page or come back in a few minutes.
+        </p>
+        
+        <!-- Action Buttons -->
+        <div class="flex flex-col sm:flex-row gap-4 justify-center mb-12">
+          <button onclick="location.reload()" class="btn-primary">
+            <span class="flex items-center gap-2">
+              <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 4v5h.582m15.356 2A8.001 8.001 0 004.582 9m0 0H9m11 11v-5h-.581m0 0a8.003 8.003 0 01-15.357-2m15.357 2H15"></path>
+              </svg>
+              Try Again
+            </span>
+          </button>
+          <a href="/" class="btn-secondary">
+            Go to Homepage
+          </a>
+        </div>
+      </div>
+
+      <!-- Status Information -->
+      <div class="bg-neutral-50 rounded-lg p-8 max-w-2xl mx-auto mb-8">
+        <h3 class="text-h3 mb-4">What You Can Do:</h3>
+        <ul class="text-left text-neutral-700 space-y-3 max-w-md mx-auto">
+          <li class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-primary-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>Wait a moment and refresh the page</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-primary-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>Clear your browser cache and cookies</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-primary-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>Check back in a few minutes</span>
+          </li>
+          <li class="flex items-start gap-3">
+            <svg class="w-5 h-5 text-primary-500 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"></path>
+            </svg>
+            <span>Contact support if the problem persists</span>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Contact Support -->
+      <div class="bg-primary-50 rounded-lg p-6 max-w-lg mx-auto">
+        <p class="text-neutral-700 mb-3">
+          <strong>Need immediate assistance?</strong>
+        </p>
+        <div class="flex flex-col sm:flex-row gap-4 justify-center items-center text-sm">
+          <a href="mailto:support@rentgrab.com" class="text-primary-600 hover:text-primary-700 transition-colors flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M3 8l7.89 5.26a2 2 0 002.22 0L21 8M5 19h14a2 2 0 002-2V7a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z"></path>
+            </svg>
+            support@rentgrab.com
+          </a>
+          <span class="text-neutral-400 hidden sm:inline">|</span>
+          <a href="/contact" class="text-primary-600 hover:text-primary-700 transition-colors flex items-center gap-2">
+            <svg class="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"></path>
+            </svg>
+            Contact Form
+          </a>
+        </div>
+      </div>
+    </div>
+  </div>
+</BaseLayout>
+
+<style>
+  /* Add a pulsing animation to the error icon */
+  @keyframes pulse {
+    0%, 100% {
+      opacity: 1;
+    }
+    50% {
+      opacity: 0.5;
+    }
+  }
+  
+  h1 {
+    animation: pulse 2s ease-in-out infinite;
+  }
+</style>

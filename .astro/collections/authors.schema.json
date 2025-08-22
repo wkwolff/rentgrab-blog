@@ -19,6 +19,9 @@
         "social": {
           "type": "object",
           "properties": {
+            "facebook": {
+              "type": "string"
+            },
             "twitter": {
               "type": "string"
             },
@@ -26,6 +29,9 @@
               "type": "string"
             },
             "github": {
+              "type": "string"
+            },
+            "instagram": {
               "type": "string"
             }
           },
