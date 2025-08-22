@@ -1,4 +1,5 @@
 ---
+import { getCollection } from 'astro:content';
 import BlogCard from '@/components/BlogCard.astro';
 
 export interface Props {
@@ -9,27 +10,59 @@ export interface Props {
 
 const { currentCategory, currentTags, currentSlug } = Astro.props;
 
-// TODO: Fetch related articles from content collection
-const relatedArticles = [
-  {
-    title: "The $3,000 Problem Hiding in Your Garage",
-    description: "Discover how much value is sitting unused in your home and how the sharing economy can turn it into income.",
-    href: "/blog/maximizing-earnings/hidden-value-in-your-garage",
-    category: "maximizing-earnings",
-    author: "W. Kevin Wolff",
-    publishDate: "2025-08-20",
-    tags: ["earning-tips", "passive-income", "getting-started"],
-  },
-  {
-    title: "Complete Guide to Peer-to-Peer Rentals",
-    description: "Everything you need to know about P2P rentals, how they work, and how to benefit as both renter and owner.",
-    href: "/blog/getting-started/complete-guide-peer-to-peer-rentals",
-    category: "getting-started",
-    author: "W. Kevin Wolff",
-    publishDate: "2025-08-18",
-    tags: ["beginner-guide", "how-to", "tutorials"],
-  },
-];
+// Fetch all blog posts from content collection
+const allPosts = await getCollection('blog', ({ data }) => {
+  return !data.draft;
+});
+
+// Find related articles based on category and tags
+const relatedArticles = allPosts
+  .filter(post => {
+    // Don't include the current post
+    if (post.slug === currentSlug) return false;
+    
+    // Priority 1: Same category
+    if (post.data.category === currentCategory) return true;
+    
+    // Priority 2: Shared tags
+    const sharedTags = post.data.tags?.filter(tag => 
+      currentTags?.includes(tag)
+    );
+    if (sharedTags && sharedTags.length > 0) return true;
+    
+    return false;
+  })
+  .sort((a, b) => {
+    // Sort by relevance (same category first, then by shared tags count)
+    const aScore = (a.data.category === currentCategory ? 10 : 0) + 
+                   (a.data.tags?.filter(tag => currentTags?.includes(tag)).length || 0);
+    const bScore = (b.data.category === currentCategory ? 10 : 0) + 
+                   (b.data.tags?.filter(tag => currentTags?.includes(tag)).length || 0);
+    
+    // If same relevance, sort by date (newest first)
+    if (aScore === bScore) {
+      return new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime();
+    }
+    
+    return bScore - aScore;
+  })
+  .slice(0, 3); // Show max 3 related articles
+
+// If we don't have enough related articles, fill with recent posts
+if (relatedArticles.length < 2) {
+  const recentPosts = allPosts
+    .filter(post => {
+      // Don't include current post or already selected related posts
+      return post.slug !== currentSlug && 
+             !relatedArticles.find(r => r.slug === post.slug);
+    })
+    .sort((a, b) => {
+      return new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime();
+    })
+    .slice(0, 3 - relatedArticles.length);
+  
+  relatedArticles.push(...recentPosts);
+}
 ---
 
 <section class="bg-neutral-50 py-12 mt-16">
@@ -37,15 +70,18 @@ const relatedArticles = [
     <h2 class="text-h2 mb-8">Related Articles</h2>
     
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-      {relatedArticles.map((article) => (
+      {relatedArticles.map((post) => (
         <BlogCard
-          title={article.title}
-          description={article.description}
-          href={article.href}
-          category={article.category}
-          author={article.author}
-          publishDate={article.publishDate}
-          tags={article.tags}
+          title={post.data.title}
+          description={post.data.description}
+          href={`/blog/${post.slug}`}
+          image={post.data.heroImage}
+          imageAlt={post.data.heroImageAlt}
+          category={post.data.category}
+          author={post.data.author}
+          publishDate={post.data.publishDate.toString()}
+          tags={post.data.tags}
+          featured={post.data.featured}
         />
       ))}
     </div>

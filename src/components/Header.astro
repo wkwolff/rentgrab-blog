@@ -27,23 +27,30 @@ const currentPath = Astro.url.pathname;
       
       <!-- Desktop Navigation -->
       <ul class="hidden tablet:flex items-center gap-6">
-        {navLinks.map((link) => (
-          <li>
-            <a
-              href={link.href}
-              class={`
-                font-medium transition-colors
-                ${currentPath === link.href || currentPath.startsWith(link.href + '/')
-                  ? 'text-primary-500'
-                  : 'text-neutral-700 hover:text-primary-500'
-                }
-              `}
-              aria-current={currentPath === link.href ? 'page' : undefined}
-            >
-              {link.label}
-            </a>
-          </li>
-        ))}
+        {navLinks.map((link) => {
+          // Special handling for /blog to prevent it matching all blog pages
+          const isActive = link.href === '/blog' 
+            ? currentPath === '/blog' || currentPath === '/blog/'
+            : currentPath === link.href || currentPath.startsWith(link.href + '/');
+          
+          return (
+            <li>
+              <a
+                href={link.href}
+                class={`
+                  font-medium transition-colors
+                  ${isActive
+                    ? 'text-primary-500'
+                    : 'text-neutral-700 hover:text-primary-500'
+                  }
+                `}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {link.label}
+              </a>
+            </li>
+          );
+        })}
       </ul>
       
       <!-- CTA Button -->
@@ -84,23 +91,30 @@ const currentPath = Astro.url.pathname;
       aria-labelledby="mobile-menu-button"
     >
       <ul class="container-lg py-4 space-y-2">
-        {navLinks.map((link) => (
-          <li>
-            <a
-              href={link.href}
-              class={`
-                block py-2 font-medium transition-colors
-                ${currentPath === link.href || currentPath.startsWith(link.href + '/')
-                  ? 'text-primary-500'
-                  : 'text-neutral-700 hover:text-primary-500'
-                }
-              `}
-              aria-current={currentPath === link.href ? 'page' : undefined}
-            >
-              {link.label}
-            </a>
-          </li>
-        ))}
+        {navLinks.map((link) => {
+          // Special handling for /blog to prevent it matching all blog pages
+          const isActive = link.href === '/blog' 
+            ? currentPath === '/blog' || currentPath === '/blog/'
+            : currentPath === link.href || currentPath.startsWith(link.href + '/');
+          
+          return (
+            <li>
+              <a
+                href={link.href}
+                class={`
+                  block py-2 font-medium transition-colors
+                  ${isActive
+                    ? 'text-primary-500'
+                    : 'text-neutral-700 hover:text-primary-500'
+                  }
+                `}
+                aria-current={isActive ? 'page' : undefined}
+              >
+                {link.label}
+              </a>
+            </li>
+          );
+        })}
         <li class="pt-4 border-t border-neutral-200">
           <a
             href="/#newsletter"
