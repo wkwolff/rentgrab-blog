@@ -1,0 +1,127 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import BlogCard from '@/components/BlogCard.astro';
+import NewsletterSignup from '@/components/NewsletterSignup.astro';
+
+// Get all blog posts
+const allPosts = await getCollection('blog', ({ data }) => {
+  return data.draft !== true;
+});
+
+// Sort posts by date (newest first)
+const sortedPosts = allPosts.sort((a, b) => 
+  new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()
+);
+
+// Get featured posts
+const featuredPosts = sortedPosts.filter(post => post.data.featured);
+
+// Categories with counts
+const categories = [
+  { name: 'Guides', slug: 'guides', icon: '📚' },
+  { name: 'Industry News', slug: 'industry-news', icon: '📰' },
+  { name: 'Success Stories', slug: 'success-stories', icon: '🎯' },
+  { name: 'Tips', slug: 'tips', icon: '💡' },
+  { name: 'Updates', slug: 'updates', icon: '🚀' },
+];
+
+// Count posts per category
+const categoryCounts = categories.map(cat => ({
+  ...cat,
+  count: allPosts.filter(post => post.data.category === cat.slug).length
+}));
+---
+
+<BaseLayout
+  title="Blog | RentGrab - Equipment Rental Insights"
+  description="Expert advice on equipment rental business, industry insights, success stories, and product updates from RentGrab."
+>
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-b from-primary-50 to-white py-12 lg:py-16">
+    <div class="container-lg text-center">
+      <h1 class="text-hero mb-4">RentGrab Blog</h1>
+      <p class="text-xl text-neutral-600 max-w-3xl mx-auto">
+        Expert insights, industry news, and practical guides to help you grow your equipment rental business.
+      </p>
+    </div>
+  </section>
+
+  <!-- Categories -->
+  <section class="container-lg py-8">
+    <div class="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-5 gap-4">
+      {categoryCounts.map((category) => (
+        <a
+          href={`/blog/${category.slug}`}
+          class="bg-white border border-neutral-200 p-4 rounded-lg text-center hover:shadow-md hover:border-primary-200 transition-all group"
+        >
+          <span class="text-2xl mb-2 block">{category.icon}</span>
+          <h3 class="font-semibold text-neutral-900 group-hover:text-primary-500 transition-colors">
+            {category.name}
+          </h3>
+          <p class="text-small text-neutral-500">{category.count} articles</p>
+        </a>
+      ))}
+    </div>
+  </section>
+
+  <!-- Featured Posts -->
+  {featuredPosts.length > 0 && (
+    <section class="container-lg py-8">
+      <h2 class="text-h2 mb-6">Featured Articles</h2>
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {featuredPosts.slice(0, 3).map((post) => (
+          <BlogCard
+            title={post.data.title}
+            description={post.data.description}
+            href={`/blog/${post.data.category}/${post.slug}`}
+            image={post.data.heroImage}
+            imageAlt={post.data.heroImageAlt}
+            category={post.data.category}
+            author={post.data.author}
+            publishDate={post.data.publishDate.toString()}
+            tags={post.data.tags}
+            featured={true}
+          />
+        ))}
+      </div>
+    </section>
+  )}
+
+  <!-- All Posts -->
+  <section class="container-lg py-8">
+    <h2 class="text-h2 mb-6">All Articles</h2>
+    {sortedPosts.length > 0 ? (
+      <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+        {sortedPosts.map((post) => (
+          <BlogCard
+            title={post.data.title}
+            description={post.data.description}
+            href={`/blog/${post.data.category}/${post.slug}`}
+            image={post.data.heroImage}
+            imageAlt={post.data.heroImageAlt}
+            category={post.data.category}
+            author={post.data.author}
+            publishDate={post.data.publishDate.toString()}
+            tags={post.data.tags}
+            featured={post.data.featured}
+          />
+        ))}
+      </div>
+    ) : (
+      <div class="text-center py-12 bg-neutral-50 rounded-lg">
+        <p class="text-xl text-neutral-600 mb-4">No blog posts yet.</p>
+        <p class="text-neutral-500">Check back soon for expert insights and guides!</p>
+      </div>
+    )}
+  </section>
+
+  <!-- Newsletter -->
+  <section class="container-lg py-12">
+    <NewsletterSignup
+      location="blog-index"
+      title="Stay Updated with Industry Insights"
+      description="Get weekly tips, trends, and strategies for growing your equipment rental business."
+    />
+  </section>
+</BaseLayout>

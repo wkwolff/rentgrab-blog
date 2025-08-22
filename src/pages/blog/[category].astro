@@ -1,0 +1,144 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '@/layouts/BaseLayout.astro';
+import BlogCard from '@/components/BlogCard.astro';
+import NewsletterSignup from '@/components/NewsletterSignup.astro';
+
+export async function getStaticPaths() {
+  const categories = [
+    { slug: 'guides', name: 'Guides', description: 'Comprehensive guides to help you succeed in equipment rental business.' },
+    { slug: 'industry-news', name: 'Industry News', description: 'Latest trends and updates from the equipment rental industry.' },
+    { slug: 'success-stories', name: 'Success Stories', description: 'Real stories from successful rental businesses using RentGrab.' },
+    { slug: 'tips', name: 'Tips', description: 'Quick tips and best practices for rental business owners.' },
+    { slug: 'updates', name: 'Updates', description: 'Product updates and new features from RentGrab.' },
+  ];
+
+  const allPosts = await getCollection('blog');
+
+  return categories.map(category => {
+    const categoryPosts = allPosts.filter(post => 
+      post.data.category === category.slug && post.data.draft !== true
+    );
+    
+    return {
+      params: { category: category.slug },
+      props: { 
+        categoryName: category.name,
+        categoryDescription: category.description,
+        posts: categoryPosts.sort((a, b) => 
+          new Date(b.data.publishDate).getTime() - new Date(a.data.publishDate).getTime()
+        )
+      },
+    };
+  });
+}
+
+const { category } = Astro.params;
+const { categoryName, categoryDescription, posts } = Astro.props;
+
+// Category icons
+const categoryIcons = {
+  'guides': '📚',
+  'industry-news': '📰',
+  'success-stories': '🎯',
+  'tips': '💡',
+  'updates': '🚀',
+};
+---
+
+<BaseLayout
+  title={`${categoryName} | RentGrab Blog`}
+  description={categoryDescription}
+>
+  <!-- Hero Section -->
+  <section class="bg-gradient-to-b from-primary-50 to-white py-12 lg:py-16">
+    <div class="container-lg">
+      <div class="flex items-center gap-4 mb-4">
+        <a href="/blog" class="text-primary-500 hover:text-primary-600 transition-colors">
+          ← Back to Blog
+        </a>
+      </div>
+      <div class="text-center">
+        <span class="text-5xl mb-4 block">{categoryIcons[category]}</span>
+        <h1 class="text-hero mb-4">{categoryName}</h1>
+        <p class="text-xl text-neutral-600 max-w-3xl mx-auto">
+          {categoryDescription}
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Posts Grid -->
+  <section class="container-lg py-12">
+    {posts.length > 0 ? (
+      <>
+        <div class="flex justify-between items-center mb-8">
+          <h2 class="text-h2">{posts.length} {posts.length === 1 ? 'Article' : 'Articles'}</h2>
+        </div>
+        
+        <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
+          {posts.map((post) => (
+            <BlogCard
+              title={post.data.title}
+              description={post.data.description}
+              href={`/blog/${post.data.category}/${post.slug}`}
+              image={post.data.heroImage}
+              imageAlt={post.data.heroImageAlt}
+              category={post.data.category}
+              author={post.data.author}
+              publishDate={post.data.publishDate.toString()}
+              tags={post.data.tags}
+              featured={post.data.featured}
+            />
+          ))}
+        </div>
+      </>
+    ) : (
+      <div class="text-center py-16 bg-neutral-50 rounded-lg">
+        <span class="text-6xl mb-4 block opacity-50">{categoryIcons[category]}</span>
+        <h2 class="text-h2 mb-4">No {categoryName} Yet</h2>
+        <p class="text-neutral-600 mb-8">
+          We're working on bringing you great content in this category. Check back soon!
+        </p>
+        <a href="/blog" class="btn-primary">
+          Browse All Articles
+        </a>
+      </div>
+    )}
+  </section>
+
+  <!-- Other Categories -->
+  <section class="bg-neutral-50 py-12">
+    <div class="container-lg">
+      <h2 class="text-h2 mb-8 text-center">Explore Other Categories</h2>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-4">
+        {Object.entries(categoryIcons).filter(([slug]) => slug !== category).map(([slug, icon]) => {
+          const name = slug.split('-').map(word => 
+            word.charAt(0).toUpperCase() + word.slice(1)
+          ).join(' ');
+          
+          return (
+            <a
+              href={`/blog/${slug}`}
+              class="bg-white p-6 rounded-lg text-center hover:shadow-md transition-all group"
+            >
+              <span class="text-3xl mb-2 block">{icon}</span>
+              <h3 class="font-semibold text-neutral-900 group-hover:text-primary-500 transition-colors">
+                {name}
+              </h3>
+            </a>
+          );
+        })}
+      </div>
+    </div>
+  </section>
+
+  <!-- Newsletter -->
+  <section class="container-lg py-12">
+    <NewsletterSignup
+      location={`category-${category}`}
+      title="Get More Insights"
+      description="Subscribe to receive the latest articles and updates in your inbox."
+    />
+  </section>
+</BaseLayout>

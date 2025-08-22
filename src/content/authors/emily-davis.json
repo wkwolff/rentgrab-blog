@@ -1,0 +1,12 @@
+{
+  "name": "Emily Davis",
+  "role": "Digital Marketing Specialist",
+  "bio": "Emily specializes in digital marketing strategies for rental businesses, with expertise in SEO, social media, and conversion optimization.",
+  "avatar": "/images/authors/emily-davis.jpg",
+  "social": {
+    "twitter": "https://x.com/rentgrab",
+    "linkedin": "https://www.linkedin.com/company/rentgrab",
+    "instagram": "https://www.instagram.com/rent.grab"
+  },
+  "expertise": ["Digital Marketing", "SEO", "Social Media", "Content Strategy"]
+}

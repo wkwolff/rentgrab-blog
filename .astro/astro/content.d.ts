@@ -159,16 +159,51 @@ declare module 'astro:content' {
   collection: "blog";
   data: InferEntrySchema<"blog">
 } & { render(): Render[".mdx"] };
+"industry-news/market-trends-2025.mdx": {
+	id: "industry-news/market-trends-2025.mdx";
+  slug: "industry-news/market-trends-2025";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
+"success-stories/local-business-growth.mdx": {
+	id: "success-stories/local-business-growth.mdx";
+  slug: "success-stories/local-business-growth";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
+"tips/digital-marketing-rental.mdx": {
+	id: "tips/digital-marketing-rental.mdx";
+  slug: "tips/digital-marketing-rental";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
+"updates/new-features-august-2025.mdx": {
+	id: "updates/new-features-august-2025.mdx";
+  slug: "updates/new-features-august-2025";
+  body: string;
+  collection: "blog";
+  data: InferEntrySchema<"blog">
+} & { render(): Render[".mdx"] };
 };
 
 	};
 
 	type DataEntryMap = {
-		"authors": Record<string, {
-  id: string;
+		"authors": {
+"emily-davis": {
+	id: "emily-davis";
   collection: "authors";
-  data: InferEntrySchema<"authors">;
-}>;
+  data: InferEntrySchema<"authors">
+};
+"sarah-johnson": {
+	id: "sarah-johnson";
+  collection: "authors";
+  data: InferEntrySchema<"authors">
+};
+};
 
 	};
 
