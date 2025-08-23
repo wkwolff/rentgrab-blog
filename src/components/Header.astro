@@ -11,7 +11,8 @@ const navLinks = [
   { href: '/contact', label: 'Contact' },
 ];
 
-const currentPath = Astro.url.pathname;
+// Normalize path for comparison (remove trailing slashes and .html)
+const currentPath = Astro.url.pathname.replace(/\.html$/, '').replace(/\/$/, '') || '/';
 ---
 
 <header class="sticky top-0 z-50 bg-white border-b border-neutral-200 backdrop-blur-sm bg-white/95">
@@ -28,10 +29,13 @@ const currentPath = Astro.url.pathname;
       <!-- Desktop Navigation -->
       <ul class="hidden tablet:flex items-center gap-6">
         {navLinks.map((link) => {
+          // Normalize link href for comparison
+          const normalizedHref = link.href.replace(/\/$/, '');
+          
           // Special handling for /blog to prevent it matching all blog pages
-          const isActive = link.href === '/blog' 
-            ? currentPath === '/blog' || currentPath === '/blog/'
-            : currentPath === link.href || currentPath.startsWith(link.href + '/');
+          const isActive = normalizedHref === '/blog' 
+            ? currentPath === '/blog'
+            : currentPath === normalizedHref || currentPath.startsWith(normalizedHref + '/');
           
           return (
             <li>
@@ -92,10 +96,13 @@ const currentPath = Astro.url.pathname;
     >
       <ul class="container-lg py-4 space-y-2">
         {navLinks.map((link) => {
+          // Normalize link href for comparison
+          const normalizedHref = link.href.replace(/\/$/, '');
+          
           // Special handling for /blog to prevent it matching all blog pages
-          const isActive = link.href === '/blog' 
-            ? currentPath === '/blog' || currentPath === '/blog/'
-            : currentPath === link.href || currentPath.startsWith(link.href + '/');
+          const isActive = normalizedHref === '/blog' 
+            ? currentPath === '/blog'
+            : currentPath === normalizedHref || currentPath.startsWith(normalizedHref + '/');
           
           return (
             <li>
