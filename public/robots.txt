@@ -1,0 +1,50 @@
+# RentGrab Blog Robots.txt
+# https://blog.rentgrab.com
+
+User-agent: *
+Allow: /
+Disallow: /403/
+Disallow: /_assets/
+Sitemap: https://blog.rentgrab.com/sitemap-index.xml
+
+# Major search engine crawlers
+User-agent: Googlebot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Bingbot
+Allow: /
+Crawl-delay: 0
+
+User-agent: Slurp
+Allow: /
+Crawl-delay: 0
+
+# Block bad bots
+User-agent: AhrefsBot
+Disallow: /
+
+User-agent: SemrushBot
+Disallow: /
+
+User-agent: DotBot
+Disallow: /
+
+User-agent: MJ12bot
+Disallow: /
+
+# AI/ML crawlers - Allow for better content understanding
+User-agent: GPTBot
+Allow: /
+
+User-agent: ChatGPT-User
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: anthropic-ai
+Allow: /
+
+User-agent: Claude-Web
+Allow: /

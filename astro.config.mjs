@@ -61,7 +61,14 @@ export default defineConfig({
   build: {
     inlineStylesheets: 'auto',
     assets: '_assets',
+    // Split JavaScript for better caching
+    splitting: true,
+    // Compress HTML output
+    format: 'file',
   },
+  
+  // Compression settings
+  compressHTML: true,
   
   // Prefetch configuration for performance
   prefetch: {

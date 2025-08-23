@@ -1,0 +1,6 @@
+{
+  "status": "healthy",
+  "service": "rentgrab-blog",
+  "version": "1.0.0",
+  "timestamp": "build-time"
+}
