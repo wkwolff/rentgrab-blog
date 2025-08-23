@@ -5,6 +5,7 @@
   "description": "RentGrab company blog - Equipment rental insights and guides",
   "scripts": {
     "dev": "astro dev --port 3000",
+    "start": "astro preview --host 0.0.0.0 --port $PORT",
     "build": "astro build",
     "preview": "astro preview",
     "check": "astro check && tsc --noEmit",
