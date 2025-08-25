@@ -11,11 +11,11 @@ const shouldLoadAnalytics = isProd && GA_MEASUREMENT_ID && GA_MEASUREMENT_ID !==
   <>
     <!-- Google Analytics 4 -->
     <script async src={`https://www.googletagmanager.com/gtag/js?id=${GA_MEASUREMENT_ID}`}></script>
-    <script>
+    <script define:vars={{ GA_MEASUREMENT_ID }}>
       window.dataLayer = window.dataLayer || [];
       function gtag(){dataLayer.push(arguments);}
       gtag('js', new Date());
-      gtag('config', '${GA_MEASUREMENT_ID}', {
+      gtag('config', GA_MEASUREMENT_ID, {
         page_path: window.location.pathname,
         anonymize_ip: true,
         cookie_flags: 'SameSite=None;Secure',
